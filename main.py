@@ -1,5 +1,7 @@
 import discord
-from privateinfo import TOKEN
+
+with open('token', 'r') as f:
+    TOKEN = f.readline()
 
 intents = discord.Intents.default()
 intents.message_content = True
