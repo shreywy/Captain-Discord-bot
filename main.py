@@ -1,27 +1,22 @@
 import disnake
 from disnake.ext import commands
 
+# drizzy drake bot by sk8#5503
+# this bot was designed for personal use
+
 with open('token', 'r') as f:
     TOKEN = f.readline()
 
-'''intents = disnake.Intents.default()
-intents.message_content = True
-bot = disnake.bot(intents=intents)
-
-command_sync_flags = commands.CommandSyncFlags.default()
-command_sync_flags.sync_commands_debug = True'''
-
 bot = commands.Bot(
-  command_prefix="!",#prefix, not needed for slash commands
+  command_prefix="[",#prefix, not needed for slash commands
   intents=disnake.Intents.all(),
-  help_command=None, #in case you want to add your own help command
+  help_command=None,
   sync_commands_debug=True,
   test_guilds=[755459753068593314]
 )
 
 reply_dict = {}
 keywords = []
-
 
 def save_servers():
     guilds = bot.guilds
