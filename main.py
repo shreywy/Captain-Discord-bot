@@ -1,26 +1,58 @@
-import discord
-from discord import *
+import disnake
+from disnake.ext import commands
 
 with open('token', 'r') as f:
     TOKEN = f.readline()
 
-intents = discord.Intents.default()
+'''intents = disnake.Intents.default()
 intents.message_content = True
-client = discord.Client(intents=intents)
+bot = disnake.bot(intents=intents)
+
+command_sync_flags = commands.CommandSyncFlags.default()
+command_sync_flags.sync_commands_debug = True'''
+
+bot = commands.Bot(
+  command_prefix="!",#prefix, not needed for slash commands
+  intents=disnake.Intents.all(),
+  help_command=None, #in case you want to add your own help command
+  sync_commands_debug=True,
+  test_guilds=[755459753068593314]
+)
+
+reply_dict = {}
+keywords = []
+
 
 def save_servers():
-    guilds = client.guilds
+    guilds = bot.guilds
     guilds_list = str(guilds)[27:-3].split(', ')
     with open('servers', 'w') as f:
         for guild in guilds_list:
             f.write(str(guild) + '\n')
 
-@client.event
-async def on_ready():
-    print('papi\'s home - {0.user}'.format(client))
-    #save_servers()
+def get_replies():
+    global reply_dict
+    with open('textreplies', 'r') as f:
+        texts = f.readlines()
+    for line in texts:
+        if line == '\n' or line == '': continue
+        tempA, tempB = line.split('<,split,>')
+        reply_dict[tempA.replace('\n', '')] = tempB.replace('\n', '')       
+        global keywords
+        if tempA not in keywords:
+            keywords.append(tempA)
 
-@client.event
+@bot.event
+async def on_ready():
+    print('{0.user} has come to brampton'.format(bot))
+    
+    global reply_dict
+    get_replies()
+    
+    global keywords
+    keywords = list(reply_dict.keys())
+
+@bot.event
 async def on_message(message):
     #message info
     username = str(message.author).split('#')[0]
@@ -30,31 +62,42 @@ async def on_message(message):
     print(f'{username}: {user_message} ({channel})')    
     
     #so the bot doesnt reply to itself
-    if message.author == client.user or message.author.bot:
+    if message.author == bot.user or message.author.bot:
         return
     
     #text replies
-    if 'wysi' in user_message:
-        await message.channel.send('bro saw 727 :skull:')
-        
-    if 'greninja' in user_message:
-        await message.channel.send('https://images-ext-1.discordapp.net/external/5ftDMrD24EHqpB8gT2R1tfybkjosJVrzPDEUiPJxOC4/%3Fsize%3D240%26quality%3Dlossless/https/cdn.discordapp.com/emojis/1043737485232050237.webp')
+    #TODO: respond to mesage text, gather text in startup function from file, store in dict.
+    if not message.author.bot:
+        for key in keywords:
+            if key in user_message:
+                await message.channel.send(reply_dict[key])
+                return
+    
+@bot.slash_command(name='add_words', description="add reactions to specified words or phrases")
+async def add(inter, phrase: str, reaction: str):
+    await inter.response.send_message(f'kk if i see a "{phrase}" then ill say "{reaction}"')
+    with open('textreplies', 'a') as f:
+        f.write(f'\n{phrase}<,split,>{reaction}')
+    get_replies()
 
-    if 'turban' == user_message:
-        await message.channel.send('https://cdn.discordapp.com/attachments/768197262546960415/1063242422328512552/bramalea.rd_20210409_144416_0.mp4')
+@bot.slash_command(name='remove_words', description="remove reactions to specified words or phrases")
+async def add(inter, phrase: str):
 
-    #voice chat
-    if user_message == ']join':
-        channel = message.author.voice.channel
-        await channel.connect()
-  
-    if user_message == ']dc':
-        voice_client = message.guild.voice_client
-        await voice_client.disconnect()
-       
-    if user_message == ']icespice':
-        voice_client = message.guild.voice_client
-        voice_client.play(discord.FFmpegPCMAudio(executable='C:\\Users\\Shrey\\AppData\\Roaming\\Python\\Python311\\site-packages\\ffmpeg', source='assets\munch.mp3'))
+    phrase = phrase
+    global keywords
+    if phrase in keywords:
+        with open('textreplies', 'r') as f:
+            text = f.readlines()
+            
+        with open('textreplies', 'w') as f:
+            for line in text:
+                if line.split('<,split,>')[0] == phrase:
+                    continue
+                else:
+                    f.write(line)
+            
+        await inter.response.send_message(f'kk if i see a "{phrase}" then i wont say nun')
+    else:
+        await inter.response.send_message(f"don't tell me to breathe… bring me a shot. dawg this word wasnt even in the database yet")
 
-
-client.run(TOKEN)
+bot.run(TOKEN)
