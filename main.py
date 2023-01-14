@@ -7,6 +7,7 @@ from disnake.ext import commands
 with open('token', 'r') as f:
     TOKEN = f.readline()
 
+# sets up bots
 bot = commands.Bot(
   command_prefix="[",#prefix, not needed for slash commands
   intents=disnake.Intents.all(),
@@ -18,6 +19,7 @@ bot = commands.Bot(
 reply_dict = {}
 keywords = []
 
+# checks what servers this bot is in, saves info
 def save_servers():
     guilds = bot.guilds
     guilds_list = str(guilds)[27:-3].split(', ')
@@ -25,6 +27,7 @@ def save_servers():
         for guild in guilds_list:
             f.write(str(guild) + '\n')
 
+# pulls phrase/reactions from textreplies file
 def get_replies():
     global reply_dict
     with open('textreplies', 'r') as f:
@@ -37,6 +40,7 @@ def get_replies():
         if tempA not in keywords:
             keywords.append(tempA)
 
+# startup events
 @bot.event
 async def on_ready():
     print('{0.user} has come to brampton'.format(bot))
