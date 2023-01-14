@@ -67,7 +67,10 @@ async def on_message(message):
             if key in user_message:
                 await message.channel.send(reply_dict[key])
                 return
-    
+
+#slash commands:
+
+#anything to phrases/reactions
 @bot.slash_command(name='add_words', description="add reactions to specified words or phrases")
 async def add(inter, phrase: str, reaction: str):
     await inter.response.send_message(f'kk if i see a "{phrase}" then ill say "{reaction}"')
