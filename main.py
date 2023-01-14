@@ -1,4 +1,4 @@
-import disnake
+import disnake, random
 from disnake.ext import commands
 
 # drizzy drake bot by sk8#5503
@@ -18,6 +18,7 @@ bot = commands.Bot(
 
 reply_dict = {}
 keywords = []
+quotes_list = []
 
 # checks what servers this bot is in, saves info
 def save_servers():
@@ -40,16 +41,25 @@ def get_replies():
         if tempA not in keywords:
             keywords.append(tempA)
 
+# get quotes from file
+def get_quotes():
+    global quotes_list
+    with open('assets\quotes.txt', 'r') as f:
+        quotes_list = f.readlines()
+    
+
 # startup events
 @bot.event
 async def on_ready():
     print('{0.user} has come to brampton'.format(bot))
     
-    global reply_dict
     get_replies()
     
     global keywords
     keywords = list(reply_dict.keys())
+    
+    get_quotes()
+    
 
 @bot.event
 async def on_message(message):
@@ -64,8 +74,8 @@ async def on_message(message):
     if message.author == bot.user or message.author.bot:
         return
     
-    #text replies
-    #TODO: respond to mesage text, gather text in startup function from file, store in dict.
+    #text replies    
+    #respond to mesage text, gather text in startup function from file, store in dict.
     if not message.author.bot:
         for key in keywords:
             if key in user_message:
@@ -102,4 +112,10 @@ async def add(inter, phrase: str):
     else:
         await inter.response.send_message(f"don't tell me to breathe… bring me a shot. dawg this word wasnt even in the database yet")
 
+@bot.slash_command(name='deep_quote', description="something from drizzy's most deepest quotes")
+async def add(inter):
+    global quotes_list
+    await inter.response.send_message(random.choice(quotes_list))
+    
+# start bot
 bot.run(TOKEN)
