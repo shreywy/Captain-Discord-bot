@@ -117,5 +117,9 @@ async def add(inter):
     global quotes_list
     await inter.response.send_message(random.choice(quotes_list))
     
+@bot.slash_command(name='bot_info', description="info about bot")
+async def add(inter):
+    await inter.response.send_message('bot made by sk8#5503. say that you a lesbian, girl, me too')
+    
 # start bot
 bot.run(TOKEN)
