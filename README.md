@@ -3,4 +3,4 @@ run npm install once
 
 
 Usage
-npm dev to run locally 
+[npm dev] to run locally 
