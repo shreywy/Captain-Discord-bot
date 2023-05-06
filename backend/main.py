@@ -1,4 +1,4 @@
-
+import cohere
 
 def getSets():
     sets = ['backend\\datasets\\shakespeare.txt','backend\\datasets\\programmer.txt','backend\\datasets\\torontomans.txt', 'backend\\datasets\\plain.txt' ]
@@ -13,3 +13,6 @@ def getSets():
 if __name__ == '__main__':
     datasets = getSets()
     print(datasets)
+    
+    co = cohere.client('ihkXSqNDJRtrS3iR9HxDrWGREDDM4XR3YpbfO2gE')
+    
