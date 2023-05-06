@@ -1,18 +1,24 @@
 import React from 'react'
 import { Route, Redirect, Switch } from 'wouter'
-
-
+import { PageWrapper } from './PageWrapper'
+import Home from "./Pages/Home" 
 
 
 export default function App (): JSX.Element {
-  return (
-    <div>
-        <input type="text" ref="myInput" />
-        <input
-          type="button"
-          value="Alert the text input"
-          onClick={this.handleClick}
-        />
-      </div>
-  )
+    return (
+
+        <>
+        <Route path="/home">
+            <PageWrapper  pageTheme={'home'}> 
+                <Home/>
+            </PageWrapper>
+        </Route>
+        <Route path="/login"></Route>
+        <Route path="/swap"></Route>
+        </>
+   )
+  
+  
+  
+    
 }
