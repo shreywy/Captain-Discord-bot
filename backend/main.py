@@ -1,7 +1,7 @@
 
 
 def getSets():
-    sets = ['backend\\datasets\\shakespeare.txt','backend\\datasets\\programmer.txt','backend\\datasets\\torontomans.txt']
+    sets = ['backend\\datasets\\shakespeare.txt','backend\\datasets\\programmer.txt','backend\\datasets\\torontomans.txt', 'backend\\datasets\\plain.txt' ]
     datasets = [[],[],[]]
     for i in range(len(sets)):
         with open(sets[i],'r') as f:
@@ -12,4 +12,4 @@ def getSets():
 
 if __name__ == '__main__':
     datasets = getSets()
-    print(datasets[0][0])
+    print(datasets)
