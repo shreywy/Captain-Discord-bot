@@ -2,20 +2,14 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "lint": "ts-standard --fix src && tsc --noEmit && prettier --no-config --write src/**/*.{css,scss,sass} && stylelint --fix src/**/*.{css,scss,sass}",
+    "test": "ts-standard src && tsc --noEmit && prettier --check src/**/*.{css,scss,sass} && stylelint src/**/*.{css,scss,sass}"
   },
   "dependencies": {
-    "clsx": "^1.1.1",
-    "JSX": "^1.1.0",
-    "jxs": "^0.0.1",
-    "modern-normalize": "^1.1.0",
-    "react": "^17.0.2",
-    "react-countdown": "^2.3.2",
-    "react-dom": "^17.0.2",
-    "react-medium-image-zoom": "^4.4.3",
-    "react-slick": "^0.29.0",
-    "sass": "^1.49.7",
-    "slick-carousel": "^1.8.1",
-    "wouter": "^2.8.0-alpha.2"
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "vite": "^4.3.5",
+    "wouter": "^2.10.1"
   }
 }
