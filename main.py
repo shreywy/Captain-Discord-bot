@@ -13,7 +13,7 @@ bot = commands.Bot(
   intents=disnake.Intents.all(),
   help_command=None,
   sync_commands_debug=True,
-  test_guilds=[755459753068593314]
+  test_guilds=[755459753068593314, 1104555889727385600]
 )
 
 reply_dict = {}
